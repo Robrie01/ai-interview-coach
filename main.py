@@ -9,12 +9,10 @@ import hashlib
 # ------------------ LOGIN SYSTEM ------------------
 
 def check_login(username, password):
-    #  SHA-256 hash of Password
-    valid_users = {
-        "robrie01": "6f80ec393c1e7fdc5b4b4290bb8e4df4f9b659d13155b0e0840a0197ae32e2b4"
-    }
-    hashed_input = hashlib.sha256(password.encode()).hexdigest()
-    return username in valid_users and valid_users[username] == hashed_input
+    correct_username = st.secrets["credentials"]["username"]
+    stored_hash = st.secrets["credentials"]["password_hash"]
+    entered_hash = hashlib.sha256(password.encode()).hexdigest()
+    return username == correct_username and entered_hash == stored_hash
 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
@@ -114,10 +112,4 @@ question_input = st.text_input("Enter your interview question")
 if st.button("Generate Answer") and question_input:
     with st.spinner("Thinking..."):
         answer = generate_interview_answer(question_input, profile_data)
-        st.markdown("---")
-        st.subheader("🗣️ Answer:")
-        st.write(answer)
-
-        if st.button("📄 Export as PDF"):
-            filename = save_to_pdf(question_input, answer)
-            st.success(f"Saved as {filename}")
+        st.mark
