@@ -11,7 +11,7 @@ import hashlib
 def check_login(username, password):
     # Store only hashed versions of passwords
     valid_users = {
-        "robrie01": "a261146504dbfdad93e0e4dc61ae38be13fd1b878acbfbdf34fe3ee32a7ac98d"  # hash of "Password.101"
+        "robrie01": "6f80ec393c1e7fdc5b4b4290bb8e4df4f9b659d13155b0e0840a0197ae32e2b4"  
     }
     hashed_input = hashlib.sha256(password.encode()).hexdigest()
     return username in valid_users and valid_users[username] == hashed_input
