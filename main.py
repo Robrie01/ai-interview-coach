@@ -1,13 +1,13 @@
+
 import streamlit as st
 import openai
 import json
 from fpdf import FPDF
 import datetime
 import os
-from openai.error import RateLimitError
 
 # ------------------ SETUP ------------------
-openai.api_key = os.environ.get("OPENAI_API_KEY")
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
 # ------------------ DEFAULT PROFILE ------------------
 def get_default_profile():
@@ -30,19 +30,14 @@ def generate_interview_answer(question, profile):
         f"{json.dumps(profile)}\n\n"
         "Answer the following interview question as if you are Roy, in a clear and confident tone."
     )
-    try:
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": question}
-            ]
-        )
-        return response.choices[0].message.content
-    except RateLimitError:
-        return "⚠️ Rate limit reached. Please wait a moment and try again."
-    except Exception as e:
-        return f"❌ An error occurred: {str(e)}"
+    response = openai.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": question}
+        ]
+    )
+    return response.choices[0].message.content
 
 # ------------------ PDF EXPORT ------------------
 def save_to_pdf(question, answer):
