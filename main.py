@@ -4,15 +4,14 @@ import json
 from fpdf import FPDF
 import datetime
 import os
-import hashlib
 
 # ------------------ LOGIN SYSTEM ------------------
 
 def check_login(username, password):
-    correct_username = st.secrets["credentials"]["username"]
-    stored_hash = st.secrets["credentials"]["password_hash"]
-    entered_hash = hashlib.sha256(password.encode()).hexdigest()
-    return username == correct_username and entered_hash == stored_hash
+    return (
+        username == st.secrets["credentials"]["username"]
+        and password == st.secrets["credentials"]["password"]
+    )
 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
@@ -112,4 +111,10 @@ question_input = st.text_input("Enter your interview question")
 if st.button("Generate Answer") and question_input:
     with st.spinner("Thinking..."):
         answer = generate_interview_answer(question_input, profile_data)
-        st.mark
+        st.markdown("---")
+        st.subheader("🗣️ Answer:")
+        st.write(answer)
+
+        if st.button("📄 Export as PDF"):
+            filename = save_to_pdf(question_input, answer)
+            st.success(f"Saved as {filename}")
