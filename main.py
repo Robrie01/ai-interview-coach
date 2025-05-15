@@ -1,10 +1,35 @@
-
 import streamlit as st
 import openai
 import json
 from fpdf import FPDF
 import datetime
 import os
+import hashlib
+
+# ------------------ LOGIN SYSTEM ------------------
+
+def check_login(username, password):
+    # Store only hashed versions of passwords
+    valid_users = {
+        "robrie01": "a261146504dbfdad93e0e4dc61ae38be13fd1b878acbfbdf34fe3ee32a7ac98d"  # hash of "Password.101"
+    }
+    hashed_input = hashlib.sha256(password.encode()).hexdigest()
+    return username in valid_users and valid_users[username] == hashed_input
+
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("🔐 Login to Access Roy's AI Interview Coach")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if check_login(username, password):
+            st.session_state.authenticated = True
+            st.experimental_rerun()
+        else:
+            st.error("Invalid credentials.")
+    st.stop()
 
 # ------------------ SETUP ------------------
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -76,8 +101,8 @@ profile_data = {
     "experience": experience.split("\n"),
     "skills": [s.strip() for s in skills.split(",")],
     "softSkills": [s.strip() for s in soft_skills.split(",")],
-    "learning": learning.split(","),
-    "certifications": certifications.split(","),
+    "learning": [l.strip() for l in learning.split(",")],
+    "certifications": [c.strip() for c in certifications.split(",")],
     "goals": goals
 }
 
