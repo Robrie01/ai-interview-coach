@@ -6,28 +6,28 @@ import datetime
 import os
 
 # ------------------ LOGIN SYSTEM ------------------
-#
-#def check_login(username, password):
-#    return (
-#        username == st.secrets["credentials"]["username"]
-#        and password == st.secrets["credentials"]["password"]
-#    )
-#
-#if "authenticated" not in st.session_state:
-#    st.session_state.authenticated = False
-#
-#if not st.session_state.authenticated:
-#    st.title("🔐 Login to Access Roy's AI Interview Coach")
-#    username = st.text_input("Username")
-#    password = st.text_input("Password", type="password")
-#    if st.button("Login"):
-#        if check_login(username, password):
-#            st.session_state.authenticated = True
-#            st.experimental_rerun()
-#        else:
-#            st.error("Invalid credentials.")
-#    st.stop()
-#
+
+def check_login(username, password):
+    return (
+        username == st.secrets["credentials"]["username"]
+        and password == st.secrets["credentials"]["password"]
+    )
+
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("🔐 Login to Access Roy's AI Interview Coach")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if check_login(username, password):
+            st.session_state.authenticated = True
+            st.experimental_rerun()
+        else:
+            st.error("Invalid credentials.")
+    st.stop()
+
 # ------------------ SETUP ------------------
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
