@@ -7,16 +7,16 @@ import os
 
 # ------------------ LOGIN SYSTEM ------------------
 
-#def check_login(username, password):
+def check_login(username, password):
     return (
         username == st.secrets["credentials"]["username"]
         and password == st.secrets["credentials"]["password"]
     )
 
-#if "authenticated" not in st.session_state:
+if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
-#if not st.session_state.authenticated:
+if not st.session_state.authenticated:
     st.title("🔐 Login to Access Roy's AI Interview Coach")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
