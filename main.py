@@ -115,6 +115,18 @@ if st.button("Generate Answer") and question_input:
         st.subheader("🗣️ Answer:")
         st.write(answer)
 
-        if st.button("📄 Export as PDF"):
-            filename = save_to_pdf(question_input, answer)
-            st.success(f"Saved as {filename}")
+        col1, col2 = st.columns([1, 1])
+
+        with col1:
+            if st.button("📄 Export as PDF"):
+                filename = save_to_pdf(question_input, answer)
+                st.success(f"Saved as {filename}")
+
+        with col2:
+            if st.button("🔊 Read Answer Aloud"):
+                st.components.v1.html(f"""
+                    <script>
+                    var utterance = new SpeechSynthesisUtterance({json.dumps(answer)});
+                    speechSynthesis.speak(utterance);
+                    </script>
+                """, height=0)
