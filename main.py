@@ -4,6 +4,7 @@ import json
 from fpdf import FPDF
 import datetime
 import os
+import streamlit.components.v1
 
 # ------------------ LOGIN SYSTEM ------------------
 #
